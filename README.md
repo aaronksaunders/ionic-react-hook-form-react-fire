@@ -1,8 +1,9 @@
 # ionic-react-hook-form-react-fire
 
-Sample project motivated by video by David East on [Reactfire](https://github.com/FirebaseExtended/reactfire)
+Sample project motivated by [video by David East](https://www.youtube.com/watch?v=cyQW2leJBnI) on [Reactfire](https://github.com/FirebaseExtended/reactfire)
 
 - **You should know that [Reactfire](https://github.com/FirebaseExtended/reactfire) is not considered "Production"**
+- This project has been tested for use on mobile devices using [Capacitor](https://capacitorjs.com/) on IOS and Android
 - In this project I use [Reactfire](https://github.com/FirebaseExtended/reactfire), [Ionic Framework ReactJS Components](https://ionicframework.com/react) and [React-Hook-Form](https://react-hook-form.com/).
 - Currently there is only Login and List Data Collection, will be adding create user, add items and delete items
 
