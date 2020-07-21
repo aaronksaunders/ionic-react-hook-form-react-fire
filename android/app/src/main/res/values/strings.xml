@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">reactfireionic</string>
+    <string name="title_activity_main">reactfireionic</string>
+    <string name="package_name">io.reactfireionic.app</string>
+    <string name="custom_url_scheme">io.reactfireionic.app</string>
+</resources>

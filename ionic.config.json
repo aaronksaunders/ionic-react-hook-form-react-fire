@@ -1,0 +1,7 @@
+{
+    "name": "reactfire-ionic-ts",
+    "integrations": {
+      "capacitor": {}
+    },
+    "type": "react"
+  }
