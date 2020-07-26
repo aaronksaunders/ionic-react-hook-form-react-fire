@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import {
   IonButtons,
@@ -12,17 +11,21 @@ import {
   IonLabel,
   IonInput,
   IonAlert,
+  IonCheckbox,
 } from "@ionic/react";
 
 import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
-
 import { useAuth } from "reactfire";
+
+export interface CheckboxChangeEventDetail {
+  value: any;
+  checked: boolean;
+}
 
 const Login: React.FunctionComponent = () => {
   const [showErrorAlert, setShowErrorAlert] = useState("");
-
 
   // SEE - https://github.com/FirebaseExtended/reactfire/issues/228
   useEffect(() => {
@@ -41,6 +44,7 @@ const Login: React.FunctionComponent = () => {
    * get data from form and sign the user in
    */
   const signIn = async (data: any) => {
+    console.log(data);
     try {
       let r = await auth.signInWithEmailAndPassword(data.email, data.password);
       console.log(r);
@@ -67,6 +71,8 @@ const Login: React.FunctionComponent = () => {
       />
     );
   };
+
+  console.log(errors);
 
   return (
     <IonPage>
