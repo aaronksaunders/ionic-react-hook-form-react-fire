@@ -1,4 +1,4 @@
-import './env';
+import "./env";
 
 import React, { Suspense } from "react";
 import { FirebaseAppProvider, AuthCheck } from "reactfire";
@@ -27,11 +27,27 @@ import { FIREBASE_CONFIG } from "./env";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 
-import { Plugins } from '@capacitor/core';
+import { Plugins } from "@capacitor/core";
+import { Route, Redirect } from "react-router";
+import CreateAccount from "./pages/CreateAccount";
 const { SplashScreen } = Plugins;
 
 // Hide the splash (you should do this on app launch)
 SplashScreen.hide();
+
+const PublicRoutes: React.FunctionComponent = () => {
+  return (
+    <IonRouterOutlet>
+      <Route exact path="/login">
+        <Login />
+      </Route>
+      <Route exact path="/create-account">
+        <CreateAccount />
+      </Route>
+      <Redirect path="/" to="/login" />
+    </IonRouterOutlet>
+  );
+};
 
 const App: React.FunctionComponent = () => {
   return (
@@ -40,7 +56,7 @@ const App: React.FunctionComponent = () => {
         <IonReactRouter>
           <IonRouterOutlet>
             <Suspense fallback={<IonLoading isOpen={true} />}>
-              <AuthCheck fallback={<Login />}>
+              <AuthCheck fallback={<PublicRoutes />}>
                 <Home />
               </AuthCheck>
             </Suspense>

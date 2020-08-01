@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonButtons,
   IonButton,
@@ -24,32 +24,32 @@ export interface CheckboxChangeEventDetail {
   checked: boolean;
 }
 
-const Login: React.FunctionComponent = () => {
+const CreateAccount: React.FunctionComponent = () => {
   const history = useHistory();
   const [showErrorAlert, setShowErrorAlert] = useState("");
 
-  // SEE - https://github.com/FirebaseExtended/reactfire/issues/228
-  useEffect(() => {
-    let map = (globalThis as any)["_reactFirePreloadedObservables"];
-    map &&
-      Array.from(map.keys()).forEach(
-        (key: any) => key.includes("firestore") && map.delete(key)
-      );
-  }, []);
-
   // from react-hook-form
   // SEE - https://react-hook-form.com/
-  const { handleSubmit, control, errors } = useForm();
+  const { handleSubmit, control, errors } = useForm({
+    defaultValues : {
+      email : "",
+      password : ""
+    }
+  });
   const auth = useAuth();
+
   /**
    * get data from form and sign the user in
    */
-  const signIn = async (data: any) => {
+  const createNewUser = async (data: any) => {
     console.log(data);
     try {
-      let r = await auth.signInWithEmailAndPassword(data.email, data.password);
-      history.replace("/")
+      let r = await auth.createUserWithEmailAndPassword(
+        data.email,
+        data.password
+      );
       console.log(r);
+      history.replace("/")
     } catch (e) {
       setShowErrorAlert(e.message);
     }
@@ -81,7 +81,7 @@ const Login: React.FunctionComponent = () => {
       <IonHeader>
         <IonToolbar color="light">
           <IonButtons slot="start" />
-          <IonTitle>Login</IonTitle>
+          <IonTitle>Create Account</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
@@ -94,13 +94,14 @@ const Login: React.FunctionComponent = () => {
           message={showErrorAlert}
           buttons={["OK"]}
         />
+        
 
-        <form  onSubmit={handleSubmit(signIn)}>
+        <form id="create-form" onSubmit={handleSubmit(createNewUser)}  >
           <IonItem>
             <IonLabel>Email</IonLabel>
             <Controller
               render={({ onChange }) => (
-                <IonInput type="email" onIonChange={onChange} defaultValue="" />
+                <IonInput type="email" onIonChange={onChange} defaultValue=""/>
               )}
               control={control}
               defaultValue=""
@@ -120,11 +121,7 @@ const Login: React.FunctionComponent = () => {
             <IonLabel>Password</IonLabel>
             <Controller
               render={({ onChange }) => (
-                <IonInput
-                  type="password"
-                  onIonChange={onChange}
-                  autocomplete="new-password"
-                />
+                <IonInput type="password" onIonChange={onChange} autocomplete="new-password" />
               )}
               control={control}
               autoComplete="new-password"
@@ -137,14 +134,14 @@ const Login: React.FunctionComponent = () => {
           {myErrorDisplay("password")}
           <div className="ion-padding">
             <IonButton expand="block" type="submit">
-              Log In
+              Create New Account
             </IonButton>
             <IonButton
+              color="danger"
               expand="block"
-              type="button"
-              onClick={() => history.push("create-account")}
+              onClick={() => history.goBack()}
             >
-              Create Account
+              Cancel
             </IonButton>
           </div>
         </form>
@@ -153,4 +150,4 @@ const Login: React.FunctionComponent = () => {
   );
 };
 
-export default Login;
+export default CreateAccount;
