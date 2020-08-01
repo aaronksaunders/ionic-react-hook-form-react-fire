@@ -8,7 +8,23 @@ Sample project motivated by [video by David East](https://www.youtube.com/watch?
 - In this project I use [Reactfire](https://github.com/FirebaseExtended/reactfire), [Ionic Framework ReactJS Components](https://ionicframework.com/react) and [React-Hook-Form](https://react-hook-form.com/).
 - We use the `<AuthCheck/>` component for cleaner routing when not logged in, See [App.tsx](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/blob/master/src/App.tsx)
 - Currently there is only [Login](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/blob/master/src/pages/Login.tsx) and [Listing The Data Collection](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/blob/master/src/pages/Home.tsx)
-- Will be adding create user, add items and delete items
+- Will be adding delete items
+
+### Saves The Following Data Structure
+I am starting to integrated typescript into my examples since I am seeing questions about types popping up in the forums. The `IModalData` is the structure of the data that is written to firebase
+```
+type IModalData = {
+  podcastName: string;
+  podcastHost: string;
+  podcastURL: string;
+};
+
+export type IModalResponse = {
+  hasData: boolean;
+  data?: IModalData;
+};
+
+```
 
 ### Required
 you must create a file called `src/env.js` and add the following code
@@ -18,7 +34,7 @@ export const FIREBASE_CONFIG = {
 };
 
 // NAME OF COLLECTION IN FIREBASE TO LIST
-export const FIREBASE_COLLECTION_NAME = "users"
+export const FIREBASE_COLLECTION_NAME = "podcast-favs"
 
 // THIS IS REQUIRED FOR ANDROID
 // SEE - https://github.com/FirebaseExtended/reactfire/issues/228
