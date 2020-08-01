@@ -25,9 +25,10 @@ global.globalThis = window;
 ```
 
 ### Whats Next
-- Add Items Using Ionic Modal
+- Add Items Using Ionic Modal        - Added on 7/31/200
+- Create Account                     - Added on 7/31/200
 - Delete Items using IonSlidingItem
-- Create Account
+
 
 ### See Other Work On My YouTube Channel
 - https://www.youtube.com/channel/UCMCcqbJpyL3LAv3PJeYz2bg
