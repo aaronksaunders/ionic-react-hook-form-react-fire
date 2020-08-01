@@ -1,4 +1,7 @@
 # ionic-react-hook-form-react-fire
+-
+## Last Updated 7/31/2020
+-
 
 Sample project motivated by [video by David East](https://www.youtube.com/watch?v=cyQW2leJBnI) on [Reactfire](https://github.com/FirebaseExtended/reactfire)
 
