@@ -12,7 +12,7 @@ Sample project motivated by [video by David East](https://www.youtube.com/watch?
 
 ### Saves The Following Data Structure
 I am starting to integrated typescript into my examples since I am seeing questions about types popping up in the forums. The `IModalData` is the structure of the data that is written to firebase
-```
+```javascript
 type IModalData = {
   podcastName: string;
   podcastHost: string;
