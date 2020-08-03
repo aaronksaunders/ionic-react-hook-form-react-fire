@@ -3,7 +3,8 @@ import "./env";
 import React, { Suspense } from "react";
 import { FirebaseAppProvider, AuthCheck } from "reactfire";
 
-import { IonApp, IonRouterOutlet, IonLoading } from "@ionic/react";
+import { IonApp, IonRouterOutlet, IonLoading  } from "@ionic/react";
+import { Route, Redirect } from "react-router-dom";
 import { IonReactRouter } from "@ionic/react-router";
 
 /* Core CSS required for Ionic components to work properly */
@@ -28,7 +29,6 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 
 import { Plugins } from "@capacitor/core";
-import { Route, Redirect } from "react-router";
 import CreateAccount from "./pages/CreateAccount";
 const { SplashScreen } = Plugins;
 
@@ -38,13 +38,20 @@ SplashScreen.hide();
 const PublicRoutes: React.FunctionComponent = () => {
   return (
     <IonRouterOutlet>
-      <Route exact path="/login">
-        <Login />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/create-account" component={CreateAccount} />
+      <Redirect exact path="/" to="/login" />
+    </IonRouterOutlet>
+  );
+};
+
+const PrivateRoutes: React.FunctionComponent = () => {
+  return (
+    <IonRouterOutlet>
+      <Route exact path="/home">
+        <Home />
       </Route>
-      <Route exact path="/create-account">
-        <CreateAccount />
-      </Route>
-      <Redirect path="/" to="/login" />
+      <Redirect exact path="/" to="/home" />
     </IonRouterOutlet>
   );
 };
@@ -54,13 +61,11 @@ const App: React.FunctionComponent = () => {
     <FirebaseAppProvider firebaseConfig={FIREBASE_CONFIG}>
       <IonApp>
         <IonReactRouter>
-          <IonRouterOutlet>
             <Suspense fallback={<IonLoading isOpen={true} />}>
               <AuthCheck fallback={<PublicRoutes />}>
-                <Home />
+                <PrivateRoutes />
               </AuthCheck>
             </Suspense>
-          </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>
     </FirebaseAppProvider>

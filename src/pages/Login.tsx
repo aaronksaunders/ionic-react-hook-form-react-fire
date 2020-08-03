@@ -14,10 +14,10 @@ import {
 } from "@ionic/react";
 
 import { useForm, Controller } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
 
 import { useAuth } from "reactfire";
 import { useHistory } from "react-router";
+import { MyErrorDisplay } from "../components/MyErrorDisplay";
 
 export interface CheckboxChangeEventDetail {
   value: any;
@@ -48,36 +48,16 @@ const Login: React.FunctionComponent = () => {
     console.log(data);
     try {
       let r = await auth.signInWithEmailAndPassword(data.email, data.password);
-      history.replace("/")
+      history.replace("/home");
       console.log(r);
     } catch (e) {
       setShowErrorAlert(e.message);
     }
   };
 
-  const myErrorDisplay = (elementName: string) => {
-    return (
-      <ErrorMessage
-        errors={errors}
-        name={elementName}
-        as={
-          <div
-            style={{
-              color: "red",
-              paddingTop: 6,
-              paddingLeft: 16,
-              fontStyle: "italic",
-            }}
-          />
-        }
-      />
-    );
-  };
-
-  console.log(errors);
-
+  console.log(history);
   return (
-    <IonPage>
+     <IonPage>
       <IonHeader>
         <IonToolbar color="light">
           <IonButtons slot="start" />
@@ -95,12 +75,12 @@ const Login: React.FunctionComponent = () => {
           buttons={["OK"]}
         />
 
-        <form  onSubmit={handleSubmit(signIn)}>
+        <form onSubmit={handleSubmit(signIn)}>
           <IonItem>
             <IonLabel>Email</IonLabel>
             <Controller
               render={({ onChange }) => (
-                <IonInput type="email" onIonChange={onChange} defaultValue="" />
+                <IonInput type="email" onIonChange={onChange} />
               )}
               control={control}
               defaultValue=""
@@ -115,7 +95,7 @@ const Login: React.FunctionComponent = () => {
               }}
             />
           </IonItem>
-          {myErrorDisplay("email")}
+          <MyErrorDisplay errors={errors} elementName="email" />
           <IonItem>
             <IonLabel>Password</IonLabel>
             <Controller
@@ -134,7 +114,7 @@ const Login: React.FunctionComponent = () => {
               }}
             />
           </IonItem>
-          {myErrorDisplay("password")}
+          <MyErrorDisplay errors={errors} elementName="password" />
           <div className="ion-padding">
             <IonButton expand="block" type="submit">
               Log In
@@ -142,7 +122,7 @@ const Login: React.FunctionComponent = () => {
             <IonButton
               expand="block"
               type="button"
-              onClick={() => history.push("create-account")}
+              onClick={() => history.push("/create-account")}
             >
               Create Account
             </IonButton>

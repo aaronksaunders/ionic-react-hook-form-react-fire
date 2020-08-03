@@ -74,8 +74,7 @@ const CreateAccount: React.FunctionComponent = () => {
     );
   };
 
-  console.log(errors);
-
+  console.log(history);
   return (
     <IonPage>
       <IonHeader>

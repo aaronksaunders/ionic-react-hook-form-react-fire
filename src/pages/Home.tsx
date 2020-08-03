@@ -24,6 +24,7 @@ import {
 import "firebase/firestore";
 import { FIREBASE_COLLECTION_NAME } from "../env";
 import AddSomethingModal, { IModalResponse } from "./AddSomethingModal";
+import { useHistory } from "react-router";
 
 type IShowAlert = null | {
   header: string;
@@ -34,6 +35,7 @@ type IShowAlert = null | {
 const Home: React.FunctionComponent = () => {
   // reactfire hook to get auth information
   const auth = useAuth();
+  const history = useHistory();
 
   // another reactfire hook to get the firebase app
   const thingsRef = useFirebaseApp()
@@ -92,7 +94,14 @@ const Home: React.FunctionComponent = () => {
       <IonHeader>
         <IonToolbar color="light">
           <IonButtons slot="end">
-            <IonButton onClick={() => auth.signOut()}>Logout</IonButton>
+            <IonButton
+              onClick={() => {
+                auth.signOut();
+                history.replace("/login");
+              }}
+            >
+              Logout
+            </IonButton>
           </IonButtons>
           <IonTitle>Home</IonTitle>
         </IonToolbar>
