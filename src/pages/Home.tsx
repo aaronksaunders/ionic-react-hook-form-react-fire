@@ -15,16 +15,14 @@ import {
   IonAlert,
 } from "@ionic/react";
 
-import {
-  useFirestoreCollectionData,
-  useFirebaseApp,
-  useAuth,
-  AuthCheck,
-} from "reactfire";
+import { useAuth, AuthCheck } from "reactfire";
 import "firebase/firestore";
-import { FIREBASE_COLLECTION_NAME } from "../env";
-import AddSomethingModal, { IModalResponse } from "./AddSomethingModal";
+import AddSomethingModal, {
+  IModalResponse,
+  IModalData,
+} from "../components/AddSomethingModal";
 import { useHistory } from "react-router";
+import { useDataProvider } from "../DataContext";
 
 type IShowAlert = null | {
   header: string;
@@ -36,15 +34,9 @@ const Home: React.FunctionComponent = () => {
   // reactfire hook to get auth information
   const auth = useAuth();
   const history = useHistory();
+  const { addItem, removeItem, dataCollection } = useDataProvider();
 
-  // another reactfire hook to get the firebase app
-  const thingsRef = useFirebaseApp()
-    .firestore()
-    .collection(FIREBASE_COLLECTION_NAME);
-
-  // another hook to query firebase collection using
-  // the reference you created above
-  const data = useFirestoreCollectionData(thingsRef, { idField: "id" });
+  console.log(dataCollection);
 
   // manages the state to determine if we need to open
   // the modal or not
@@ -71,17 +63,27 @@ const Home: React.FunctionComponent = () => {
 
   /**
    *
-   * @param response
+   * @param item IModalData
+   */
+  const removeSomething = (item: IModalData) => {
+    removeItem(item)
+      .then(() => showAlert("Success"))
+      .catch((error: any) => {
+        showAlert(error.message, true);
+      });
+  };
+
+  /**
+   *
+   * @param response IModalResponse
    */
   const addSomething = async (response: IModalResponse) => {
     setShowModal(false);
     if (response.hasData) {
       alert(JSON.stringify(response.data));
-      thingsRef
-        .doc()
-        .set({ ...response.data })
+      addItem(response.data!)
         .then(() => showAlert("Success"))
-        .catch((error) => {
+        .catch((error: any) => {
           showAlert(error.message, true);
         });
     } else {
@@ -138,9 +140,9 @@ const Home: React.FunctionComponent = () => {
         <AuthCheck fallback={<IonLoading isOpen={true} />}>
           {/* list of items from reactfire */}
           <IonList>
-            {data.map((e: any) => {
+            {dataCollection.map((e: any) => {
               return (
-                <IonItem key={e.id}>
+                <IonItem key={e.id} onClick={() => removeSomething(e)}>
                   <IonLabel className="ion-text-wrap">
                     <pre>{JSON.stringify(e, null, 2)}</pre>
                   </IonLabel>

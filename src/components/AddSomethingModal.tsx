@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 
 import { useForm } from "react-hook-form";
-import { MyIonTextItem } from "../components/MyIonTextItem";
+import { MyIonTextItem } from "./MyIonTextItem";
 
 const AddSomethingModal: React.FunctionComponent<{
   onCloseModal: (data: IModalResponse) => Promise<void>;
@@ -78,10 +78,11 @@ const AddSomethingModal: React.FunctionComponent<{
 
 export default AddSomethingModal;
 
-type IModalData = {
+export type IModalData = {
   podcastName: string;
   podcastHost: string;
   podcastURL: string;
+  id? : string;
 };
 
 export type IModalResponse = {

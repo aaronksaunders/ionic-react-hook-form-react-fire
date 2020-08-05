@@ -3,7 +3,7 @@ import "./env";
 import React, { Suspense } from "react";
 import { FirebaseAppProvider, AuthCheck } from "reactfire";
 
-import { IonApp, IonRouterOutlet, IonLoading  } from "@ionic/react";
+import { IonApp, IonRouterOutlet, IonLoading } from "@ionic/react";
 import { Route, Redirect } from "react-router-dom";
 import { IonReactRouter } from "@ionic/react-router";
 
@@ -30,6 +30,7 @@ import Home from "./pages/Home";
 
 import { Plugins } from "@capacitor/core";
 import CreateAccount from "./pages/CreateAccount";
+import { DataProvider } from "./DataContext";
 const { SplashScreen } = Plugins;
 
 // Hide the splash (you should do this on app launch)
@@ -49,7 +50,9 @@ const PrivateRoutes: React.FunctionComponent = () => {
   return (
     <IonRouterOutlet>
       <Route exact path="/home">
-        <Home />
+        <DataProvider>
+          <Home />
+        </DataProvider>
       </Route>
       <Redirect exact path="/" to="/home" />
     </IonRouterOutlet>
@@ -61,11 +64,11 @@ const App: React.FunctionComponent = () => {
     <FirebaseAppProvider firebaseConfig={FIREBASE_CONFIG}>
       <IonApp>
         <IonReactRouter>
-            <Suspense fallback={<IonLoading isOpen={true} />}>
-              <AuthCheck fallback={<PublicRoutes />}>
-                <PrivateRoutes />
-              </AuthCheck>
-            </Suspense>
+          <Suspense fallback={<IonLoading isOpen={true} />}>
+            <AuthCheck fallback={<PublicRoutes />}>
+              <PrivateRoutes />
+            </AuthCheck>
+          </Suspense>
         </IonReactRouter>
       </IonApp>
     </FirebaseAppProvider>
