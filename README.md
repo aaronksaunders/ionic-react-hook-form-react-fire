@@ -1,5 +1,5 @@
 # ionic-react-hook-form-react-fire
-### Last Updated 8/4/2020
+### Last Updated 8/16/2020
 
 Releases and tags coincide with specific blog posts in the series [See Blog Series](https://dev.to/aaronksaunders/using-reactfire-with-ionic-framework-capacitor-35g6)
 - Part One - [releases/tag/v1.0](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/releases/tag/v1.0)
