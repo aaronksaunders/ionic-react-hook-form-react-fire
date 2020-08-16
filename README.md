@@ -5,6 +5,7 @@ Releases and tags coincide with specific blog posts in the series [See Blog Seri
 - Part One - [releases/tag/v1.0](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/releases/tag/v1.0)
 - Part Two - [releases/tag/v1.2](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/releases/tag/v1.2)
 - Part Three - [releases/tag/v1.3](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/releases/tag/v1.3)
+- Part Four - [releases/tag/v1.4](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/releases/tag/v1.4)
 
 Sample project motivated by [video by David East](https://www.youtube.com/watch?v=cyQW2leJBnI) on [Reactfire](https://github.com/FirebaseExtended/reactfire)
 
@@ -49,7 +50,11 @@ global.globalThis = window;
 ### Whats Next
 - Add Items Using Ionic Modal        - Added on 7/31/200
 - Create Account                     - Added on 7/31/200
-- Delete Items using IonSlidingItem
+- Delete Items using IonSlidingItem  - Added on 8/16/200
+- Update Items                       - Added on 8/16/200
+- Reset Forms                        - Added on 8/16/200
+- Default Data in ReactHook Form     - Added on 8/16/200
+
 
 
 ### See Other Work On My YouTube Channel
