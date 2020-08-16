@@ -6,6 +6,7 @@ import { IModalData } from "./components/AddSomethingModal";
 
 interface IState {
   dataCollection: null | undefined | any;
+  updateItem: (itemData: IModalData) => Promise<void>;
   addItem: (itemData: IModalData) => Promise<void>;
   removeItem: (itemData: IModalData) => Promise<void>;
 }
@@ -38,19 +39,28 @@ export const DataProvider: React.FC = ({ children }) => {
    *
    * @param itemData
    */
+const updateItem = (itemData: IModalData) => {
+  return thingsRef.doc(itemData.id).set({ ...itemData }, { merge: true });
+};
+
+  /**
+   *
+   * @param itemData
+   */
   const removeItem = (itemData: IModalData) => {
     return thingsRef.doc(itemData.id).delete();
   };
 
-  // the store object
-  let state = {
-    dataCollection: data,
-    addItem,
-    removeItem,
-  };
+// the store object
+let state = {
+  dataCollection: data,
+  addItem,
+  updateItem,
+  removeItem,
+};
 
-  // wrap the application in the provider with the initialized context
-  return <DataContext.Provider value={state}>{children}</DataContext.Provider>;
+// wrap the application in the provider with the initialized context
+return <DataContext.Provider value={state}>{children}</DataContext.Provider>;
 };
 
 export default DataContext;

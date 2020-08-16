@@ -7,24 +7,29 @@ import {
   IonTitle,
   IonContent,
   IonPage,
+  IonLabel,
+  IonItem,
+  IonText,
 } from "@ionic/react";
 
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { MyIonTextItem } from "./MyIonTextItem";
 
 const AddSomethingModal: React.FunctionComponent<{
   onCloseModal: (data: IModalResponse) => Promise<void>;
-}> = ({ onCloseModal }) => {
+  initialData?: IModalData;
+}> = ({ onCloseModal, initialData }) => {
   // from react-hook-form
-  // SEE - https://react-hook-form.com/
-  const { handleSubmit, control, errors } = useForm();
+  const methods = useForm({
+    defaultValues: initialData,
+  });
   /**
    * get data from form and pass it back to the parent
    * component
    */
   const addTheThing = async (data: IModalData) => {
-    console.log(data);
-    onCloseModal({ hasData: true, data });
+    console.log({ ...initialData, ...data });
+    onCloseModal({ hasData: true, data: { ...initialData, ...data } });
   };
 
   return (
@@ -32,57 +37,69 @@ const AddSomethingModal: React.FunctionComponent<{
       <IonHeader>
         <IonToolbar color="light">
           <IonButtons slot="start" />
-          <IonTitle>Enter Thing Information</IonTitle>
+          <IonTitle>{initialData ? "Update " : "Create New "} Thing</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <form onSubmit={handleSubmit(addTheThing)}>
-          <MyIonTextItem
-            labelName="Podcast Name"
-            name="podcastName"
-            errors={errors}
-            control={control}
-          />
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(addTheThing)}>
+            <MyIonTextItem labelName="Podcast Name" name="podcastName" />
 
-          <MyIonTextItem
-            labelName="Host"
-            name="podcastHost"
-            errors={errors}
-            control={control}
-          />
+            <MyIonTextItem labelName="Host" name="podcastHost" />
 
-          <MyIonTextItem
-            labelName="URL"
-            name="podcastURL"
-            errors={errors}
-            control={control}
-          />
+            <MyIonTextItem labelName="URL" name="podcastURL" />
+            {initialData && (
+              <IonItem>
+                <IonLabel>ID</IonLabel>
+                <IonText>{initialData.id}</IonText>
+              </IonItem>
+            )}
 
-          <div className="ion-padding">
-            <IonButton expand="block" type="submit">
-              Save Podcast Information
-            </IonButton>
-            <IonButton
-              expand="block"
-              type="button"
-              onClick={() => onCloseModal({ hasData: false })}
-            >
-              Cancel
-            </IonButton>
-          </div>
-        </form>
+            <div className="ion-padding">
+              <IonButton expand="block" type="submit">
+                {initialData ? "Update " : "Save "} Podcast Information
+              </IonButton>
+              {!initialData && (
+                <IonButton
+                  color="warning"
+                  expand="block"
+                  type="button"
+                  onClick={() =>
+                    methods.reset({
+                      podcastHost: "",
+                      podcastName: "",
+                      podcastURL: "",
+                    })
+                  }
+                >
+                  Clear Form
+                </IonButton>
+              )}
+              <IonButton
+                color="danger"
+                expand="block"
+                type="button"
+                onClick={() =>
+                  onCloseModal({ hasData: false, data: undefined })
+                }
+              >
+                Cancel
+              </IonButton>
+            </div>
+          </form>
+        </FormProvider>
       </IonContent>
     </IonPage>
   );
 };
 
-export default AddSomethingModal;
+export default React.memo(AddSomethingModal);
 
 export type IModalData = {
   podcastName: string;
   podcastHost: string;
   podcastURL: string;
-  id? : string;
+  id?: string;
 };
 
 export type IModalResponse = {

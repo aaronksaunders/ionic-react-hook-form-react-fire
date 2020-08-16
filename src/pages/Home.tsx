@@ -7,10 +7,8 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonLabel,
   IonLoading,
   IonList,
-  IonItem,
   IonModal,
   IonAlert,
 } from "@ionic/react";
@@ -23,6 +21,7 @@ import AddSomethingModal, {
 } from "../components/AddSomethingModal";
 import { useHistory } from "react-router";
 import { useDataProvider } from "../DataContext";
+import Line from "./Line";
 
 type IShowAlert = null | {
   header: string;
@@ -34,13 +33,14 @@ const Home: React.FunctionComponent = () => {
   // reactfire hook to get auth information
   const auth = useAuth();
   const history = useHistory();
-  const { addItem, removeItem, dataCollection } = useDataProvider();
+  const { addItem, removeItem, dataCollection, updateItem } = useDataProvider();
 
-  console.log(dataCollection);
-
-  // manages the state to determine if we need to open
-  // the modal or not
-  const [showModal, setShowModal] = useState(false);
+// manages the state to determine if we need to open
+// the modal or not
+const [showModal, setShowModal] = useState<{
+  show: boolean;
+  initialData?: IModalData;
+}>({ show: false });
 
   // manages the state to determine if we need to open
   // the modal or not
@@ -61,6 +61,13 @@ const Home: React.FunctionComponent = () => {
     });
   };
 
+/**
+ * @param item 
+ */
+const editSomething = (item: IModalData) => {
+  setShowModal({ show: true, initialData: item });
+};
+
   /**
    *
    * @param item IModalData
@@ -78,16 +85,21 @@ const Home: React.FunctionComponent = () => {
    * @param response IModalResponse
    */
   const addSomething = async (response: IModalResponse) => {
-    setShowModal(false);
-    if (response.hasData) {
-      alert(JSON.stringify(response.data));
-      addItem(response.data!)
-        .then(() => showAlert("Success"))
-        .catch((error: any) => {
-          showAlert(error.message, true);
-        });
-    } else {
+    setShowModal({ show: false });
+    if (!response.hasData) {
       showAlert("User Cancelled", true);
+      return;
+    } else {
+      try {
+        if (response.data?.id) {
+          await updateItem(response.data!);
+        } else {
+          await addItem(response.data!);
+        }
+        showAlert("Success");
+      } catch (error) {
+        showAlert(error.message, true);
+      }
     }
   };
 
@@ -112,7 +124,7 @@ const Home: React.FunctionComponent = () => {
         <IonButton
           title="Add Something"
           fill="outline"
-          onClick={() => setShowModal(true)}
+          onClick={() => setShowModal({ show: true })}
         >
           Add Something
         </IonButton>
@@ -129,12 +141,18 @@ const Home: React.FunctionComponent = () => {
         />
 
         {/* ionic modal component */}
-        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-          {/* our custom modal content */}
-          <AddSomethingModal
-            onCloseModal={(data: IModalResponse) => addSomething(data)}
-          />
-        </IonModal>
+        {showModal.show && (
+          <IonModal
+            isOpen={showModal.show}
+            onDidDismiss={() => setShowModal({ show: false })}
+          >
+            {/* our custom modal content */}
+            <AddSomethingModal
+              initialData={showModal.initialData}
+              onCloseModal={(data: IModalResponse) => addSomething(data)}
+            />
+          </IonModal>
+        )}
 
         {/* auth check and loader while in progress */}
         <AuthCheck fallback={<IonLoading isOpen={true} />}>
@@ -142,11 +160,12 @@ const Home: React.FunctionComponent = () => {
           <IonList>
             {dataCollection.map((e: any) => {
               return (
-                <IonItem key={e.id} onClick={() => removeSomething(e)}>
-                  <IonLabel className="ion-text-wrap">
-                    <pre>{JSON.stringify(e, null, 2)}</pre>
-                  </IonLabel>
-                </IonItem>
+                <Line
+                  item={e}
+                  key={e.id}
+                  edit={editSomething}
+                  remove={removeSomething}
+                />
               );
             })}
           </IonList>
@@ -155,4 +174,4 @@ const Home: React.FunctionComponent = () => {
     </IonPage>
   );
 };
-export default Home;
+export default React.memo(Home);
