@@ -1,3 +1,5 @@
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W31U7HM)
+
 # ionic-react-hook-form-react-fire
 ### Last Updated 8/16/2020
 
