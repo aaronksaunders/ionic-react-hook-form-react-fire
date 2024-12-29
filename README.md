@@ -1,7 +1,10 @@
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W31U7HM)
 
 # ionic-react-hook-form-react-fire
-### Last Updated 8/16/2020
+
+---
+### NEW Updated Project 12/2025 SEE THIS REPOSITORY - https://github.com/aaronksaunders/ionic-react-reactfire-capacitor-app
+---
 
 Releases and tags coincide with specific blog posts in the series [See Blog Series](https://dev.to/aaronksaunders/using-reactfire-with-ionic-framework-capacitor-35g6)
 - Part One - [releases/tag/v1.0](https://github.com/aaronksaunders/ionic-react-hook-form-react-fire/releases/tag/v1.0)
